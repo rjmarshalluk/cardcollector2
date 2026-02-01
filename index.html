@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Card Pack Collector</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Card Collector V3 Ultimate (Fixed Packs)</title>
 
 <style>
 :root{
-  --bg:#070a1f;
-  --panel:#0f163d;
-  --panel2:#141d52;
-  --glow:#5ddcff;
-  --glow2:#c77dff;
-  --text:#eaf0ff;
+  --bg:#060814;
+  --panel:#12163d;
+  --panel2:#1c2270;
+  --neon:#00eaff;
+  --pink:#ff4dff;
+  --text:#f3f6ff;
+  --muted:rgba(243,246,255,.75);
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:'Segoe UI',system-ui,sans-serif;
+  font-family:system-ui,Segoe UI,sans-serif;
   background:
-    radial-gradient(circle at top,#141b5a,transparent 40%),
-    linear-gradient(180deg,#050817,#02030a);
+    radial-gradient(circle at top,#1b2170,transparent 50%),
+    radial-gradient(circle at 20% 30%, rgba(255,77,255,.15), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(0,234,255,.15), transparent 40%),
+    linear-gradient(#04050e,#070b22);
   color:var(--text);
 }
 
-/* TOP BAR */
+/* ===== HEADER ===== */
 #top{
   position:sticky;
   top:0;
@@ -33,112 +37,156 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:16px 26px;
-  background:linear-gradient(180deg,#0b1240,#070a1f);
+  padding:18px 22px;
+  background:linear-gradient(180deg,#0a0f36,#060821);
   border-bottom:1px solid rgba(255,255,255,.08);
-}
-#stats{
-  font-size:14px;
-  line-height:1.4;
-  letter-spacing:.3px;
+  box-shadow:0 0 60px rgba(0,234,255,.22);
 }
 
-/* BUTTONS */
-button{
-  padding:12px 22px;
-  border:none;
+#hud{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.statBox{
+  background:linear-gradient(180deg,#12184d,#0c1035);
+  padding:10px 14px;
   border-radius:14px;
-  background:
-    linear-gradient(135deg,var(--glow),var(--glow2));
-  color:#02030a;
-  font-weight:900;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    0 0 22px rgba(0,234,255,.18);
+  font-weight:800;
+  letter-spacing:.2px;
+  font-size:14px;
+}
+
+button{
+  background:linear-gradient(135deg,var(--neon),var(--pink));
+  border:none;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:950;
   cursor:pointer;
-  box-shadow:0 0 18px rgba(93,220,255,.4);
-  transition:.2s;
+  color:#050513;
+  box-shadow:0 0 26px rgba(0,234,255,.55);
+  transition:.16s;
 }
-button:hover{
-  transform:translateY(-2px) scale(1.03);
-  box-shadow:0 0 30px rgba(199,125,255,.6);
-}
-button:active{transform:scale(.97)}
+button:hover{transform:translateY(-2px) scale(1.04); box-shadow:0 0 44px rgba(255,77,255,.65);}
+button:active{transform:scale(.96)}
 
-/* SECTIONS */
+.btnRow{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* ===== SECTIONS ===== */
 .section{
-  margin:40px 28px;
+  margin:34px 22px;
+  max-width:1200px;
 }
-.section h2{
-  margin-bottom:16px;
-  font-size:26px;
-  letter-spacing:1px;
+@media (min-width: 1100px){
+  .section{margin:40px auto;}
 }
 
-/* SHOP */
+.sectionTitle{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+}
+.sectionTitle h2{
+  margin:0;
+  font-size:28px;
+  letter-spacing:.6px;
+  text-shadow:0 0 16px rgba(0,234,255,.35);
+}
+.sectionTitle .sub{
+  color:var(--muted);
+  font-weight:700;
+  font-size:13px;
+}
+
+/* ===== PACK SHOP ===== */
 .shop{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:16px;
 }
+
 .pack{
-  padding:20px;
-  border-radius:22px;
-  background:
-    linear-gradient(180deg,var(--panel2),var(--panel));
-  text-align:center;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  padding:16px;
+  border-radius:18px;
+  text-align:left;
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.06),
-    0 10px 30px rgba(0,0,0,.6);
-  transition:.2s;
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    0 14px 40px rgba(0,0,0,.55);
+  transition:.18s;
+  position:relative;
+  overflow:hidden;
+}
+.pack:before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:radial-gradient(circle at top left, rgba(0,234,255,.22), transparent 45%),
+             radial-gradient(circle at bottom right, rgba(255,77,255,.22), transparent 45%);
+  pointer-events:none;
 }
 .pack:hover{
   transform:translateY(-6px);
-  box-shadow:
-    0 0 40px rgba(93,220,255,.4);
+  box-shadow:0 0 46px rgba(0,234,255,.25);
 }
 .pack h3{
   margin:0 0 6px;
   font-size:18px;
+  letter-spacing:.3px;
 }
-.pack p{
-  margin:0 0 12px;
-  opacity:.85;
+.pack .meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:var(--muted);
+  font-weight:800;
+  margin-bottom:10px;
 }
+.pack .meta span:last-child{
+  color:var(--text);
+  opacity:.95;
+}
+.pack button{width:100%; margin-top:4px}
 
-/* INVENTORY */
+/* ===== INVENTORY ===== */
 .inventory{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:22px;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:18px;
 }
+
 .card{
-  background:
-    linear-gradient(180deg,#151e55,#0b1033);
-  border-radius:26px;
+  background:linear-gradient(180deg,#1b2080,#0c103b);
+  border-radius:22px;
   padding:12px;
   text-align:center;
   position:relative;
-  transition:.25s;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    0 16px 45px rgba(0,0,0,.55);
+  transition:.18s;
 }
-.card:hover{
-  transform:scale(1.05);
-}
+.card:hover{transform:scale(1.05)}
 .card .art{
-  height:240px;
+  font-size:78px;
+  height:230px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:72px;
 }
-.card strong{
-  display:block;
-  font-size:18px;
-}
-
-/* RARITY GLOWS */
-.Common{box-shadow:0 0 16px #aaa}
-.Rare{box-shadow:0 0 20px #5ddcff}
-.Epic{box-shadow:0 0 28px #c77dff}
-.Legendary{box-shadow:0 0 36px orange}
-.Mythic{box-shadow:0 0 46px red}
+.card strong{display:block; font-size:18px; margin-top:2px}
+.card .count{color:var(--muted); font-weight:800; margin-top:2px}
 
 .badge{
   position:absolute;
@@ -147,65 +195,142 @@ button:active{transform:scale(.97)}
   padding:6px 12px;
   border-radius:999px;
   font-size:11px;
-  font-weight:900;
+  font-weight:950;
+  letter-spacing:.3px;
+  background:rgba(255,255,255,.12);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10);
 }
 
-/* OVERLAYS */
-#overlay,#dailyArea{
+/* RARITY GLOWS */
+.Common{box-shadow:0 0 12px rgba(220,220,220,.55)}
+.Rare{box-shadow:0 0 18px rgba(0,234,255,.65)}
+.Epic{box-shadow:0 0 26px rgba(199,125,255,.7)}
+.Legendary{box-shadow:0 0 34px rgba(255,165,0,.75)}
+.Mythic{box-shadow:0 0 48px rgba(255,0,0,.78)}
+
+/* ===== PACK OPEN OVERLAY ===== */
+#overlay, #dailyArea{
   position:fixed;
   inset:0;
-  background:rgba(2,3,10,.95);
+  background:rgba(0,0,0,.92);
   display:none;
   justify-content:center;
   align-items:center;
   flex-direction:column;
   z-index:30;
+  padding:18px;
 }
 
-/* PACK OPEN */
+#overlay h2{
+  margin:0 0 12px;
+  text-shadow:0 0 20px rgba(0,234,255,.45);
+  letter-spacing:1px;
+}
+
 #reveal{
   display:flex;
-  gap:18px;
+  gap:16px;
   flex-wrap:wrap;
   justify-content:center;
+  margin:10px 0 16px;
 }
+
 .reveal-card{
-  background:var(--panel2);
-  border-radius:20px;
-  padding:10px;
-  width:140px;
+  width:150px;
+  background:linear-gradient(180deg,var(--panel2),#0e123b);
+  padding:12px;
+  border-radius:18px;
   text-align:center;
-  animation:pop .4s ease;
+  box-shadow:0 0 26px rgba(0,234,255,.18);
+  animation:pop .28s ease;
 }
 .reveal-card .art{
   height:120px;
-  font-size:42px;
+  font-size:46px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
 }
 @keyframes pop{
-  from{transform:scale(.6);opacity:0}
+  from{transform:scale(.55);opacity:0}
   to{transform:scale(1);opacity:1}
 }
 
-/* DAILY */
-.daily-box{
-  background:
-    linear-gradient(180deg,var(--panel2),#080c28);
-  padding:36px;
-  border-radius:28px;
-  text-align:center;
-  width:360px;
-  box-shadow:0 0 60px rgba(93,220,255,.4);
+/* ===== CRAZY FLASH (Legendary+) ===== */
+#rareFlash{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:200;
+  font-size:64px;
+  font-weight:1000;
+  letter-spacing:4px;
+  pointer-events:none;
 }
+.legendFlash{
+  background:radial-gradient(circle, rgba(255,170,0,.92), rgba(0,0,0,.96));
+  color:white;
+  text-shadow:0 0 40px orange;
+}
+.mythicFlash{
+  background:radial-gradient(circle, rgba(255,0,0,.95), rgba(0,0,0,.98));
+  color:white;
+  text-shadow:0 0 60px red;
+}
+@keyframes flash{
+  from{opacity:0; transform:scale(.6)}
+  40%{opacity:1; transform:scale(1.15)}
+  to{opacity:0; transform:scale(1)}
+}
+.flashAnim{ animation:flash .7s ease; }
+
+@keyframes shake{
+  0%,100%{transform:translate(0)}
+  25%{transform:translate(-8px)}
+  50%{transform:translate(8px)}
+  75%{transform:translate(-6px)}
+}
+.shake{animation:shake .4s}
+
+/* ===== DAILY AREA ===== */
+.dailyBox{
+  width:min(380px, 92vw);
+  background:linear-gradient(180deg,var(--panel2),#070a22);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 0 60px rgba(0,234,255,.25);
+  text-align:center;
+}
+.dailyBox h2{margin:0 0 10px}
 .timer{
   font-size:30px;
-  margin:14px 0;
+  font-weight:950;
+  letter-spacing:1px;
+  margin:10px 0 12px;
+  text-shadow:0 0 16px rgba(255,77,255,.35);
 }
-.preview{
-  opacity:.7;
-  font-size:15px;
+.today{
+  font-size:18px;
+  font-weight:900;
+  margin:8px 0 6px;
+}
+.tomorrow{
+  color:var(--muted);
+  font-weight:800;
+  margin-bottom:14px;
+}
+.smallNote{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
+
+#leaderboard{
+  color:var(--muted);
+  font-weight:900;
+  letter-spacing:.2px;
 }
 </style>
 </head>
@@ -213,203 +338,414 @@ button:active{transform:scale(.97)}
 <body>
 
 <div id="top">
-  <div id="stats">
-    💰 <span id="coins"></span> coins<br>
-    🖱 <span id="cpc"></span> / click
+  <div id="hud">
+    <div class="statBox">💰 <span id="coins">0</span></div>
+    <div class="statBox">🖱 <span id="cpc">0</span>/click</div>
+    <div class="statBox">⚡ Power: <span id="power">0</span></div>
   </div>
-  <div>
+  <div class="btnRow">
     <button onclick="openDaily()">🎁 DAILY</button>
     <button onclick="clickCoins()">CLICK</button>
   </div>
 </div>
 
 <div class="section">
-<h2>🛒 Pack Shop</h2>
-<div class="shop">
-  <div class="pack"><h3>Starter</h3><p>250</p><button onclick="buyPack(250)">Open</button></div>
-  <div class="pack"><h3>Animal</h3><p>500</p><button onclick="buyPack(500)">Open</button></div>
-  <div class="pack"><h3>Forest</h3><p>1,000</p><button onclick="buyPack(1000)">Open</button></div>
-  <div class="pack"><h3>Hero</h3><p>3,000</p><button onclick="buyPack(3000)">Open</button></div>
-  <div class="pack"><h3>Warrior</h3><p>7,500</p><button onclick="buyPack(7500)">Open</button></div>
-  <div class="pack"><h3>Epic</h3><p>15,000</p><button onclick="buyPack(15000)">Open</button></div>
-  <div class="pack"><h3>Legend</h3><p>40,000</p><button onclick="buyPack(40000)">Open</button></div>
-  <div class="pack"><h3>Legend+</h3><p>80,000</p><button onclick="buyPack(80000)">Open</button></div>
-  <div class="pack"><h3>Mythic</h3><p>200,000</p><button onclick="buyPack(200000)">Open</button></div>
-</div>
+  <div class="sectionTitle">
+    <h2>🛒 Pack Shop</h2>
+    <div class="sub">All packs work (fixed)</div>
+  </div>
+  <div class="shop" id="shop"></div>
 </div>
 
 <div class="section">
-<h2>📘 Your Collection</h2>
-<div class="inventory" id="inventory"></div>
+  <div class="sectionTitle">
+    <h2>📘 Your Collection</h2>
+    <div class="sub">Duplicates boost coins per click</div>
+  </div>
+  <div class="inventory" id="inventory"></div>
 </div>
 
 <div class="section">
-<h2>🏆 Best Card</h2>
-<p id="leaderboard"></p>
+  <div class="sectionTitle">
+    <h2>🏆 Best Card</h2>
+    <div class="sub">Highest rarity you own</div>
+  </div>
+  <div id="leaderboard">Best Card: None</div>
 </div>
 
+<!-- PACK OPEN -->
 <div id="overlay">
   <h2>YOU GOT</h2>
   <div id="reveal"></div>
   <button onclick="overlay.style.display='none'">DONE</button>
 </div>
 
+<!-- CRAZY FLASH -->
+<div id="rareFlash"></div>
+
+<!-- DAILY AREA -->
 <div id="dailyArea">
-  <div class="daily-box">
-    <h2>🎁 Daily Reward</h2>
-    <div class="timer" id="dailyTimer"></div>
-    <div id="todayReward"></div>
-    <div class="preview" id="tomorrowReward"></div>
+  <div class="dailyBox">
+    <h2>🎁 Daily Rewards</h2>
+    <div class="timer" id="dailyTimer">00:00:00</div>
+    <div class="today" id="todayReward">Today: …</div>
+    <div class="tomorrow" id="tomorrowReward">Tomorrow: …</div>
     <button id="claimDailyBtn" onclick="claimDaily()">CLAIM</button>
-    <button onclick="dailyArea.style.display='none'">CLOSE</button>
+    <button onclick="closeDaily()">CLOSE</button>
+    <div class="smallNote">Reward refreshes every 24 hours</div>
   </div>
 </div>
 
 <script>
-/* SAVE */
-const COIN_KEY="UI_coins";
-const INV_KEY="UI_inv";
-const DAILY_TIME="UI_daily_time";
-const DAILY_DAY="UI_daily_day";
+/* =========================
+   SAVE (separate keys)
+========================= */
+const COIN_KEY="V3U_coins";
+const INV_KEY="V3U_inv";
+const DAILY_TIME="V3U_daily_time";
+const DAILY_DAY="V3U_daily_day";
 
-let coins=+localStorage.getItem(COIN_KEY)||20;
-let inv=JSON.parse(localStorage.getItem(INV_KEY))||{};
+let coins = +localStorage.getItem(COIN_KEY);
+if (!Number.isFinite(coins)) coins = 20;
 
-const rarityPower={Common:1,Rare:3,Epic:7,Legendary:15,Mythic:30};
+let inv = JSON.parse(localStorage.getItem(INV_KEY) || "{}");
 
-const cards=[
-{name:"Cat",rarity:"Common",icon:"🐱"},
-{name:"Dog",rarity:"Common",icon:"🐶"},
-{name:"Fox",rarity:"Common",icon:"🦊"},
-{name:"Rabbit",rarity:"Common",icon:"🐰"},
-{name:"Frog",rarity:"Common",icon:"🐸"},
-{name:"Panda",rarity:"Common",icon:"🐼"},
-{name:"Bear",rarity:"Rare",icon:"🐻"},
-{name:"Lion",rarity:"Rare",icon:"🦁"},
-{name:"Wolf",rarity:"Rare",icon:"🐺"},
-{name:"Tiger",rarity:"Rare",icon:"🐯"},
-{name:"Eagle",rarity:"Rare",icon:"🦅"},
-{name:"Crocodile",rarity:"Rare",icon:"🐊"},
-{name:"Knight",rarity:"Epic",icon:"🛡️"},
-{name:"Wizard",rarity:"Epic",icon:"🧙"},
-{name:"Archer",rarity:"Epic",icon:"🏹"},
-{name:"Viking",rarity:"Epic",icon:"🪓"},
-{name:"Samurai",rarity:"Epic",icon:"🗡️"},
-{name:"Paladin",rarity:"Epic",icon:"⚔️"},
-{name:"Ninja",rarity:"Legendary",icon:"🥷"},
-{name:"Robot",rarity:"Legendary",icon:"🤖"},
-{name:"Assassin",rarity:"Legendary",icon:"🗡️"},
-{name:"Mech",rarity:"Legendary",icon:"⚙️"},
-{name:"Dark Wizard",rarity:"Legendary",icon:"🧿"},
-{name:"Dragon",rarity:"Mythic",icon:"🐉"},
-{name:"Phoenix",rarity:"Mythic",icon:"🔥"},
-{name:"Unicorn",rarity:"Mythic",icon:"🦄"},
-{name:"Cosmic God",rarity:"Mythic",icon:"🌌"},
-{name:"Thunder God",rarity:"Mythic",icon:"⚡"},
-{name:"Sea Leviathan",rarity:"Mythic",icon:"🌊"},
-{name:"Sun Titan",rarity:"Mythic",icon:"☀️"}
+/* =========================
+   DATA
+========================= */
+const rarityPower = { Common:1, Rare:3, Epic:7, Legendary:15, Mythic:30 };
+const rarityRank  = { Common:1, Rare:2, Epic:3, Legendary:4, Mythic:5 };
+
+const cards = [
+  // COMMON
+  {name:"Cat",rarity:"Common",icon:"🐱"},
+  {name:"Dog",rarity:"Common",icon:"🐶"},
+  {name:"Fox",rarity:"Common",icon:"🦊"},
+  {name:"Panda",rarity:"Common",icon:"🐼"},
+  {name:"Koala",rarity:"Common",icon:"🐨"},
+  {name:"Monkey",rarity:"Common",icon:"🐵"},
+  {name:"Cow",rarity:"Common",icon:"🐮"},
+  {name:"Rabbit",rarity:"Common",icon:"🐰"},
+  {name:"Frog",rarity:"Common",icon:"🐸"},
+
+  // RARE
+  {name:"Penguin",rarity:"Rare",icon:"🐧"},
+  {name:"Shark",rarity:"Rare",icon:"🦈"},
+  {name:"Eagle",rarity:"Rare",icon:"🦅"},
+  {name:"Tiger",rarity:"Rare",icon:"🐯"},
+  {name:"Crocodile",rarity:"Rare",icon:"🐊"},
+
+  // EPIC
+  {name:"Knight",rarity:"Epic",icon:"🛡️"},
+  {name:"Mage",rarity:"Epic",icon:"🧙"},
+  {name:"Elf",rarity:"Epic",icon:"🧝"},
+  {name:"Orc",rarity:"Epic",icon:"👹"},
+  {name:"Archer",rarity:"Epic",icon:"🏹"},
+
+  // LEGENDARY
+  {name:"Samurai",rarity:"Legendary",icon:"🗡️"},
+  {name:"Ninja",rarity:"Legendary",icon:"🥷"},
+  {name:"Robot",rarity:"Legendary",icon:"🤖"},
+  {name:"Dragon",rarity:"Legendary",icon:"🐉"},
+  {name:"Cyborg",rarity:"Legendary",icon:"🔩"},
+  {name:"Mech",rarity:"Legendary",icon:"⚙️"},
+
+  // MYTHIC
+  {name:"Phoenix",rarity:"Mythic",icon:"🔥"},
+  {name:"Void Lord",rarity:"Mythic",icon:"🌑"},
+  {name:"Titan",rarity:"Mythic",icon:"👑"},
+  {name:"Leviathan",rarity:"Mythic",icon:"🌊"},
+  {name:"Sun God",rarity:"Mythic",icon:"☀️"},
+  {name:"Black Hole",rarity:"Mythic",icon:"🕳️"},
+  {name:"Star Guardian",rarity:"Mythic",icon:"🌠"},
+  {name:"Time God",rarity:"Mythic",icon:"⏳"}
 ];
 
-const dailyRewards=[
-{type:"coins",value:25000,label:"+25,000 Coins"},
-{type:"pack",value:15000,label:"Epic Pack"},
-{type:"coins",value:50000,label:"+50,000 Coins"},
-{type:"pack",value:40000,label:"Legend Pack"},
-{type:"coins",value:100000,label:"+100,000 Coins"},
-{type:"pack",value:80000,label:"Legend+ Pack"},
-{type:"pack",value:200000,label:"Mythic Pack"}
+const packs = [
+  ["Starter", 250],
+  ["Animal", 500],
+  ["Forest", 1000],
+  ["Ocean", 2000],
+  ["Desert", 3000],
+  ["Hero", 5000],
+  ["Warrior", 7500],
+  ["Magic", 12000],
+  ["Tech", 16000],
+  ["Epic", 20000],
+  ["Legend", 50000],
+  ["Cosmic", 150000],
+  ["Chaos", 300000],
+  ["Celestial", 450000],
+  ["God Pack", 650000]
 ];
 
-function coinsPerClick(){
-  let p=5;
-  for(let k in inv)p+=rarityPower[inv[k].rarity]*inv[k].count;
+const dailyRewards = [
+  {type:"coins", value:25000,  label:"+25,000 Coins"},
+  {type:"pack",  value:20000,  label:"Free Epic Pack"},
+  {type:"coins", value:50000,  label:"+50,000 Coins"},
+  {type:"pack",  value:50000,  label:"Free Legend Pack"},
+  {type:"coins", value:100000, label:"+100,000 Coins"},
+  {type:"pack",  value:150000, label:"Free Cosmic Pack"},
+  {type:"pack",  value:650000, label:"Free God Pack"}
+];
+
+/* =========================
+   HELPERS
+========================= */
+function save(){
+  localStorage.setItem(COIN_KEY, String(coins));
+  localStorage.setItem(INV_KEY, JSON.stringify(inv));
+}
+
+function powerTotal(){
+  let p=0;
+  for(const k in inv){
+    const c=inv[k];
+    p += rarityPower[c.rarity] * c.count;
+  }
   return p;
 }
 
-function clickCoins(){coins+=coinsPerClick();render();}
-function buyPack(c){if(coins<c)return alert("Not enough coins!");coins-=c;openPack(c);}
-
-function roll(cost){
-  let r=Math.random()*100;
-  if(cost>=200000&&r<40)return cards.filter(c=>c.rarity==="Mythic")[Math.floor(Math.random()*7)];
-  if(cost>=80000&&r<35)return cards.filter(c=>c.rarity==="Legendary")[Math.floor(Math.random()*5)];
-  if(cost>=40000&&r<30)return cards.filter(c=>c.rarity==="Legendary")[Math.floor(Math.random()*5)];
-  if(r<40)return cards.filter(c=>c.rarity==="Common")[Math.floor(Math.random()*6)];
-  if(r<70)return cards.filter(c=>c.rarity==="Rare")[Math.floor(Math.random()*6)];
-  if(r<90)return cards.filter(c=>c.rarity==="Epic")[Math.floor(Math.random()*6)];
-  return cards.filter(c=>c.rarity==="Legendary")[0];
+function coinsPerClick(){
+  return 5 + powerTotal();
 }
 
-function openPack(cost){
-  overlay.style.display="flex";
-  reveal.innerHTML="";
-  let pulls=cost<1000?3:cost<5000?4:5;
-  setTimeout(()=>{
-    for(let i=0;i<pulls;i++){
-      let c=roll(cost);
-      if(!inv[c.name])inv[c.name]={...c,count:0};
-      inv[c.name].count++;
-      reveal.innerHTML+=`<div class="reveal-card ${c.rarity}"><div class="art">${c.icon}</div><strong>${c.name}</strong></div>`;
-    }
-    render();
-  },400);
-}
-
-let dailyInterval;
-function openDaily(){dailyArea.style.display="flex";updateDaily();dailyInterval=setInterval(updateDaily,1000);}
-function updateDaily(){
-  let last=+localStorage.getItem(DAILY_TIME)||0;
-  let diff=86400000-(Date.now()-last);
-  let day=+localStorage.getItem(DAILY_DAY)||0;
-  let today=dailyRewards[day%dailyRewards.length];
-  let tomorrow=dailyRewards[(day+1)%dailyRewards.length];
-  todayReward.textContent="Today: "+today.label;
-  tomorrowReward.textContent="Tomorrow: "+tomorrow.label;
-  if(diff<=0){dailyTimer.textContent="READY!";claimDailyBtn.style.display="block";}
-  else{
-    let h=Math.floor(diff/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
-    dailyTimer.textContent=`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-    claimDailyBtn.style.display="none";
+function bestCardName(){
+  let best="None", bestR=0;
+  for(const k in inv){
+    const r = rarityRank[inv[k].rarity] || 0;
+    if(r > bestR){ bestR=r; best=k; }
   }
+  return best;
 }
-function claimDaily(){
-  let day=+localStorage.getItem(DAILY_DAY)||0;
-  let r=dailyRewards[day%dailyRewards.length];
-  if(r.type==="coins")coins+=r.value;else openPack(r.value);
-  localStorage.setItem(DAILY_TIME,Date.now());
-  localStorage.setItem(DAILY_DAY,day+1);
-  dailyArea.style.display="none";
-  clearInterval(dailyInterval);
+
+function pickFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+const byRarity = {
+  Common: cards.filter(c=>c.rarity==="Common"),
+  Rare: cards.filter(c=>c.rarity==="Rare"),
+  Epic: cards.filter(c=>c.rarity==="Epic"),
+  Legendary: cards.filter(c=>c.rarity==="Legendary"),
+  Mythic: cards.filter(c=>c.rarity==="Mythic")
+};
+
+/* Better odds on expensive packs */
+function rollCardForPackCost(cost){
+  let r = Math.random()*100;
+
+  const mythBonus = cost >= 650000 ? 8 : cost >= 450000 ? 6 : cost >= 300000 ? 5 : cost >= 150000 ? 4 : cost >= 50000 ? 2 : 0;
+  const legBonus  = cost >= 650000 ? 18 : cost >= 450000 ? 15 : cost >= 300000 ? 13 : cost >= 150000 ? 10 : cost >= 50000 ? 6 : cost >= 20000 ? 4 : 0;
+
+  let myth = 2 + mythBonus;
+  let leg  = 10 + legBonus;
+  let epic = 18;
+  let rare = 25;
+  let common = Math.max(0, 100 - (myth+leg+epic+rare));
+
+  if(r < myth) return pickFrom(byRarity.Mythic);
+  r -= myth;
+  if(r < leg) return pickFrom(byRarity.Legendary);
+  r -= leg;
+  if(r < epic) return pickFrom(byRarity.Epic);
+  r -= epic;
+  if(r < rare) return pickFrom(byRarity.Rare);
+  return pickFrom(byRarity.Common.length ? byRarity.Common : cards);
+}
+
+/* =========================
+   GAME ACTIONS
+========================= */
+function clickCoins(){
+  coins += coinsPerClick();
   render();
 }
 
-function render(){
-  coinsEl.textContent=coins;
-  cpcEl.textContent=coinsPerClick();
-  inventory.innerHTML="";
-  let best="None",bestVal=0;
-  for(let k in inv){
-    let c=inv[k];
-    inventory.innerHTML+=`<div class="card ${c.rarity}"><span class="badge">${c.rarity}</span><div class="art">${c.icon}</div><strong>${k}</strong><br>x${c.count}</div>`;
-    if(rarityPower[c.rarity]>bestVal){bestVal=rarityPower[c.rarity];best=k;}
-  }
-  leaderboard.textContent=`Best Card: ${best}`;
-  localStorage.setItem(COIN_KEY,coins);
-  localStorage.setItem(INV_KEY,JSON.stringify(inv));
+function buyPack(cost){
+  if(coins < cost) return alert("Not enough coins!");
+  coins -= cost;
+  openPack(cost);
 }
 
+/* CRAZY animation for Legendary+ */
+function openPack(cost){
+  overlay.style.display="flex";
+  reveal.innerHTML="";
+
+  const pulled = [];
+  for(let i=0;i<4;i++){
+    const card = rollCardForPackCost(cost);
+    if(!inv[card.name]) inv[card.name] = {...card, count:0};
+    inv[card.name].count++;
+    pulled.push(card);
+  }
+
+  const big = pulled.find(c => c.rarity==="Legendary" || c.rarity==="Mythic");
+
+  if(big){
+    rareFlash.style.display="flex";
+    rareFlash.textContent = big.rarity.toUpperCase()+"!";
+    rareFlash.className = ""; // reset
+    rareFlash.classList.add(big.rarity==="Mythic" ? "mythicFlash" : "legendFlash");
+    rareFlash.classList.add("flashAnim");
+
+    document.body.classList.add("shake");
+
+    setTimeout(()=>{
+      rareFlash.style.display="none";
+      rareFlash.className = "";
+      document.body.classList.remove("shake");
+      showReveal(pulled);
+    },700);
+  }else{
+    showReveal(pulled);
+  }
+
+  render();
+}
+
+function showReveal(list){
+  reveal.innerHTML="";
+  for(const card of list){
+    const div = document.createElement("div");
+    div.className = `reveal-card ${card.rarity}`;
+    div.innerHTML = `
+      <div class="art">${card.icon}</div>
+      <strong>${card.name}</strong>
+      <div style="color:var(--muted);font-weight:900;margin-top:2px">${card.rarity}</div>
+    `;
+    reveal.appendChild(div);
+  }
+}
+
+/* =========================
+   DAILY
+========================= */
+let dailyInterval;
+
+function openDaily(){
+  dailyArea.style.display="flex";
+  updateDaily();
+  clearInterval(dailyInterval);
+  dailyInterval = setInterval(updateDaily, 1000);
+}
+
+function closeDaily(){
+  dailyArea.style.display="none";
+  clearInterval(dailyInterval);
+}
+
+function updateDaily(){
+  const last = +localStorage.getItem(DAILY_TIME) || 0;
+  const now = Date.now();
+  const diff = 86400000 - (now - last);
+
+  const day = +localStorage.getItem(DAILY_DAY) || 0;
+  const today = dailyRewards[day % dailyRewards.length];
+  const tomorrow = dailyRewards[(day+1) % dailyRewards.length];
+
+  todayReward.textContent = "Today: " + today.label;
+  tomorrowReward.textContent = "Tomorrow: " + tomorrow.label;
+
+  if(diff <= 0){
+    dailyTimer.textContent = "READY!";
+    claimDailyBtn.style.display = "inline-block";
+  }else{
+    const h = Math.floor(diff/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    dailyTimer.textContent = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+    claimDailyBtn.style.display = "none";
+  }
+}
+
+function claimDaily(){
+  const last = +localStorage.getItem(DAILY_TIME) || 0;
+  const now = Date.now();
+  if(now - last < 86400000) return;
+
+  let day = +localStorage.getItem(DAILY_DAY) || 0;
+  const reward = dailyRewards[day % dailyRewards.length];
+
+  if(reward.type === "coins") coins += reward.value;
+  else openPack(reward.value);
+
+  localStorage.setItem(DAILY_TIME, String(Date.now()));
+  localStorage.setItem(DAILY_DAY, String(day+1));
+
+  closeDaily();
+  render();
+}
+
+/* =========================
+   RENDER / BUILD SHOP
+========================= */
+function buildShop(){
+  shop.innerHTML="";
+  for(const [name,cost] of packs){
+    const div = document.createElement("div");
+    div.className="pack";
+    div.innerHTML = `
+      <h3>${name}</h3>
+      <div class="meta"><span>Price</span><span>${cost.toLocaleString()}</span></div>
+      <button onclick="buyPack(${cost})">Open</button>
+    `;
+    shop.appendChild(div);
+  }
+}
+
+function render(){
+  coinsEl.textContent = coins.toLocaleString();
+  const p = powerTotal();
+  powerEl.textContent = p.toLocaleString();
+  cpcEl.textContent = coinsPerClick().toLocaleString();
+
+  const list = Object.values(inv).sort((a,b)=>{
+    const ra = rarityRank[a.rarity]||0;
+    const rb = rarityRank[b.rarity]||0;
+    if(rb!==ra) return rb-ra;
+    return a.name.localeCompare(b.name);
+  });
+
+  inventory.innerHTML="";
+  for(const c of list){
+    const d = document.createElement("div");
+    d.className = `card ${c.rarity}`;
+    d.innerHTML = `
+      <div class="badge">${c.rarity}</div>
+      <div class="art">${c.icon}</div>
+      <strong>${c.name}</strong>
+      <div class="count">x${c.count} • +${(rarityPower[c.rarity]*c.count).toLocaleString()} power</div>
+    `;
+    inventory.appendChild(d);
+  }
+
+  leaderboard.textContent = `Best Card: ${bestCardName()}`;
+  save();
+}
+
+/* =========================
+   INIT
+========================= */
 const coinsEl=document.getElementById("coins");
 const cpcEl=document.getElementById("cpc");
+const powerEl=document.getElementById("power");
+
 const inventory=document.getElementById("inventory");
 const leaderboard=document.getElementById("leaderboard");
+
 const overlay=document.getElementById("overlay");
 const reveal=document.getElementById("reveal");
+const rareFlash=document.getElementById("rareFlash");
+
+const shop=document.getElementById("shop");
+
 const dailyArea=document.getElementById("dailyArea");
 const dailyTimer=document.getElementById("dailyTimer");
 const todayReward=document.getElementById("todayReward");
 const tomorrowReward=document.getElementById("tomorrowReward");
 const claimDailyBtn=document.getElementById("claimDailyBtn");
 
+buildShop();
 render();
 </script>
 
