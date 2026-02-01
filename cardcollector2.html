@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Collector + Trading</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui;
+  background:#070b22;
+  color:white;
+}
+
+/* ===== HEADER ===== */
+#top{
+  display:flex;
+  justify-content:space-between;
+  padding:12px;
+  background:#0b1038;
+  position:sticky;
+  top:0;
+}
+
+.stat{
+  background:#141a4f;
+  padding:6px 10px;
+  border-radius:8px;
+  font-weight:900;
+}
+
+button{
+  background:cyan;
+  border:none;
+  padding:8px 14px;
+  border-radius:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* ===== SECTIONS ===== */
+.section{padding:12px}
+
+.shop,.inventory,.players{
+  display:grid;
+  gap:10px;
+  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+}
+
+.card,.pack,.player{
+  background:#1b2080;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.art{font-size:40px}
+
+/* ===== TRADE WINDOW ===== */
+#trade{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="top">
+  <div>
+    <span class="stat">💰 <span id="coins">0</span></span>
+    <span class="stat">🖱 <span id="cpc">0</span></span>
+  </div>
+  <button id="clickBtn">CLICK</button>
+</div>
+
+<!-- PACKS -->
+<div class="section">
+<h3>🛒 Packs</h3>
+<div id="shop" class="shop"></div>
+</div>
+
+<!-- INVENTORY -->
+<div class="section">
+<h3>📘 Inventory</h3>
+<div id="inventory" class="inventory"></div>
+</div>
+
+<!-- TRADING -->
+<div class="section">
+<h3>🌍 Online Players (Trading)</h3>
+<div id="players" class="players"></div>
+</div>
+
+<div id="trade">
+  <h2>Trading with <span id="tradeName"></span></h2>
+  <div id="tradeInv" class="inventory"></div>
+  <button onclick="closeTrade()">Cancel</button>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const SAVE="CARD_GAME_STABLE";
+let data=JSON.parse(localStorage.getItem(SAVE))||{coins:20,inv:{}};
+let coins=data.coins,inv=data.inv;
+
+const rarityPower={Common:1,Rare:3,Epic:7,Legendary:15,Mythic:30};
+
+const cards=[
+{name:"Cat",rarity:"Common",icon:"🐱"},
+{name:"Dog",rarity:"Common",icon:"🐶"},
+{name:"Penguin",rarity:"Rare",icon:"🐧"},
+{name:"Knight",rarity:"Epic",icon:"🛡️"},
+{name:"Dragon",rarity:"Legendary",icon:"🐉"},
+{name:"Phoenix",rarity:"Mythic",icon:"🔥"}
+];
+
+const packs=[
+["Starter",200],
+["Epic",2000],
+["Legend",10000]
+];
+
+/* ================= BUILD SHOP ================= */
+const shop=document.getElementById("shop");
+
+packs.forEach(p=>{
+  const d=document.createElement("div");
+  d.className="pack";
+  d.innerHTML=`${p[0]}<br>${p[1]}<br>`;
+  const b=document.createElement("button");
+  b.textContent="Open";
+  b.onclick=()=>buyPack(p[1]);
+  d.appendChild(b);
+  shop.appendChild(d);
+});
+
+/* ================= POWER ================= */
+function coinsPerClick(){
+  let p=5;
+  for(let k in inv)p+=rarityPower[inv[k].rarity]*inv[k].count;
+  return p;
+}
+
+/* ================= CLICK ================= */
+document.getElementById("clickBtn").onclick=()=>{
+  coins+=coinsPerClick();
+  render();
+};
+
+/* ================= PACK OPEN ================= */
+function buyPack(cost){
+  if(coins<cost)return;
+  coins-=cost;
+
+  const c=cards[Math.floor(Math.random()*cards.length)];
+  if(!inv[c.name])inv[c.name]={...c,count:0};
+  inv[c.name].count++;
+
+  render();
+}
+
+/* ================= INVENTORY ================= */
+const inventory=document.getElementById("inventory");
+
+function renderInventory(){
+  inventory.innerHTML="";
+  for(let k in inv){
+    const c=inv[k];
+    const d=document.createElement("div");
+    d.className="card";
+    d.innerHTML=`<div class="art">${c.icon}</div>${k}<br>x${c.count}`;
+    inventory.appendChild(d);
+  }
+}
+
+/* ================= TRADING ================= */
+const playersDiv=document.getElementById("players");
+const trade=document.getElementById("trade");
+const tradeInv=document.getElementById("tradeInv");
+const tradeName=document.getElementById("tradeName");
+
+const fakePlayers=["Player1","Player2","Player3"];
+
+fakePlayers.forEach(name=>{
+  const d=document.createElement("div");
+  d.className="player";
+  d.textContent=name;
+  d.onclick=()=>startTrade(name);
+  playersDiv.appendChild(d);
+});
+
+function startTrade(name){
+  trade.style.display="flex";
+  tradeName.textContent=name;
+  tradeInv.innerHTML="";
+
+  for(let k in inv){
+    const c=inv[k];
+    const d=document.createElement("div");
+    d.className="card";
+    d.innerHTML=`${c.icon}<br>${k}`;
+    d.onclick=()=>{
+      if(c.count>0){c.count--; closeTrade(); render();}
+    };
+    tradeInv.appendChild(d);
+  }
+}
+
+function closeTrade(){trade.style.display="none";}
+
+/* ================= RENDER ================= */
+function render(){
+  document.getElementById("coins").textContent=coins;
+  document.getElementById("cpc").textContent=coinsPerClick();
+  renderInventory();
+  localStorage.setItem(SAVE,JSON.stringify({coins,inv}));
+}
+
+render();
+</script>
+
+</body>
+</html>
